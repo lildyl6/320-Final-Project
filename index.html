@@ -13968,55 +13968,480 @@ a.anchor-link {
     </script>
     <!-- End of mathjax configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Analysis-of-Tennis-Players-and-Matches-During-2020">Analysis of Tennis Players and Matches During 2020<a class="anchor-link" href="#Analysis-of-Tennis-Players-and-Matches-During-2020">&#182;</a></h1><h3 id="By-Dylan-Jones">By Dylan Jones<a class="anchor-link" href="#By-Dylan-Jones">&#182;</a></h3><h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>The purpose of this project is to analyze and interpret data pulled from an open source tennis database that contains a vast amount of information about each tennis match played in the year of 2020. I will scrape the data from the website, clean it up, analyze it, and display certain sections of the data in a meaningful and readable way.</p>
+<h2 id="Step-1:-Importing-libraries">Step 1: Importing libraries<a class="anchor-link" href="#Step-1:-Importing-libraries">&#182;</a></h2><p>The required libraries for this project are numpy, pandas, and matplotlib. Numpy is used because it offers a wide variety of tools and functions to manipulate the data I am using in virtually any way imaginable. Pandas is used to create dataframes with the data and it makes data manipulation very simple. Matplotlib's pyplot is used to show the data and interpret any trends I might find.</p>
+<p>Note: the keyword 'as' just creates a shortcut for later use. Instead of calling a function like        numpy.mean() I can just call np.mean() since I created the shortcut 'as' np.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[201]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[223]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
 
-<span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2020.csv&#39;</span>
+     </div>
+</div>
+</div>
+</div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Step-2:-Collecting-the-data">Step 2: Collecting the data<a class="anchor-link" href="#Step-2:-Collecting-the-data">&#182;</a></h2><p>Data collection is the most crucial part of any data manipulation project. It is an easy step to complete, but can be tricky to get the formatting exactly how you want. You have to be sure the file or website you want to get the data from is syntactically correct in your jupyter file.</p>
+<p>For this project, I will be getting my data from an open source database on github. The exact link to this data set is in my code below but will also provide it below. Keep in mind it is the raw data, which is in csv format, not the webpage version.</p>
+<p>To begin, I copied and pasted the link to the webpage and stored it as 'file'. After that I called the pandas read_csv function to create a pandas dataframe out of the csv file obtained off github.</p>
+<p>After this was completed I called table.head() to display the first 5 rows of the data frame I just created. You can also insert an argument to .head() to display that number of rows. For example table.head(10) shows the first 10 rows of the table.</p>
+<p>Link for data set: <a href="https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2020.csv">https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2020.csv</a><br>
+Pandas API: <a href="https://pandas.pydata.org/docs/reference/index.html">https://pandas.pydata.org/docs/reference/index.html</a></p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[224]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2020.csv&#39;</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
-<span class="c1"># cleaning up the data to make it more readable</span>
-<span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="c1">#cleaning up date of match</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;tourney_date&#39;</span><span class="p">]</span>
+<span class="n">table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1"># Displays first 5 rows of the table by default</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
     
-    <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[224]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tourney_id</th>
+      <th>tourney_name</th>
+      <th>surface</th>
+      <th>draw_size</th>
+      <th>tourney_level</th>
+      <th>tourney_date</th>
+      <th>match_num</th>
+      <th>winner_id</th>
+      <th>winner_seed</th>
+      <th>winner_entry</th>
+      <th>...</th>
+      <th>l_1stIn</th>
+      <th>l_1stWon</th>
+      <th>l_2ndWon</th>
+      <th>l_SvGms</th>
+      <th>l_bpSaved</th>
+      <th>l_bpFaced</th>
+      <th>winner_rank</th>
+      <th>winner_rank_points</th>
+      <th>loser_rank</th>
+      <th>loser_rank_points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>300</td>
+      <td>104925</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>51.0</td>
+      <td>39.0</td>
+      <td>6.0</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>2.0</td>
+      <td>9055.0</td>
+      <td>1.0</td>
+      <td>9985.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>299</td>
+      <td>105138</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>35.0</td>
+      <td>21.0</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>2335.0</td>
+      <td>34.0</td>
+      <td>1251.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>298</td>
+      <td>104925</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>57.0</td>
+      <td>35.0</td>
+      <td>25.0</td>
+      <td>14.0</td>
+      <td>6.0</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>9055.0</td>
+      <td>5.0</td>
+      <td>5705.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>297</td>
+      <td>105583</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>54.0</td>
+      <td>39.0</td>
+      <td>14.0</td>
+      <td>12.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>34.0</td>
+      <td>1251.0</td>
+      <td>17.0</td>
+      <td>1840.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>296</td>
+      <td>104745</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>55.0</td>
+      <td>37.0</td>
+      <td>10.0</td>
+      <td>14.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>1.0</td>
+      <td>9985.0</td>
+      <td>18.0</td>
+      <td>1775.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 49 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Step-3:-Cleaning-the-data">Step 3: Cleaning the data<a class="anchor-link" href="#Step-3:-Cleaning-the-data">&#182;</a></h2><p>Cleaning the data is a fancy way of saying making the data readable, and more user-friendly. As you can see above, there are way too many columns, many of which I dont care about. Also, as you can see above, the date of the tournament is in ugly format, and there are many NaN entries. NaN represents Not A Number which means the entry for that index is empty or invalid.</p>
+<p>During the next few steps I will get into the methods and logic behind how I cleaned and tidied up the data in the dataframe. I am going to split two of the steps up to explain each one individually but if you wanted to make your program more efficient, you could do both of the next two steps inside of the same for loop.</p>
+<h3 id="Step-3.1:-Making-the-data-of-the-match-more-readable">Step 3.1: Making the data of the match more readable<a class="anchor-link" href="#Step-3.1:-Making-the-data-of-the-match-more-readable">&#182;</a></h3><p>As you can see above, the data of the match is in an ugly format and for readability, and ease of use later, I will separate this one number into three separate columns containing the year, month, and day of each tennis match.</p>
+<p>The first thing I do is create a loop that will go through each element of the table. The iterrows function accomplishes shit for me. The API for this is cited below. After I set up the loop, I grab the element at the column 'tourney_date' through the use of table.at. table.at gets the element of index[x, column] where x is being iterated. Basically I am grabbing each element in the column of 'tourney_date'. Through a little bit of debugging(I took this out later), I determined the type of the element was an integer using type(table.at[rank, 'tourney_date']). Knowing this information I could manipulate the number knowing that it was always in the form of 4 digit year, 2 digit month, 2 digit day. So through basic division and modulus I extracted which parts of the number I wanted for what. I then set the table's element at a new column created to be that value extracted. I also casted it as an int just to be sure. Normally you would think, table.at[rank, 'tourney_year'] would throw an error since 'tourney_year' isn't in the dataframe. But this syntax actually just creates a new column and inserts that value into the current row of that new column.</p>
+<p>Iterrows API: <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iterrows.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iterrows.html</a></p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[225]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;tourney_date&#39;</span><span class="p">]</span> <span class="c1"># getting the element</span>
+    
+    <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span> <span class="c1"># parsing the integer of &#39;tournet_date&#39; into its components</span>
     <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span><span class="o">%</span><span class="k">1000</span>
     <span class="n">day</span> <span class="o">=</span> <span class="n">date</span><span class="o">%</span><span class="k">100</span>
 
-    <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;tourney_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;tourney_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="c1"># inserting the value into the new column just created</span>
     <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;tourney_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;tourney_day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
     
-    <span class="c1">#cleaning up ages</span>
-    <span class="n">w_age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">])</span>
-    <span class="n">l_age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">])</span>
-    
-    <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w_age</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_age</span>
-    
-    
-    
-<span class="c1"># only keep important columns to make more readable</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[[</span><span class="s1">&#39;tourney_name&#39;</span><span class="p">,</span> <span class="s1">&#39;surface&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_name&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">,</span> 
-               <span class="s1">&#39;loser_name&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_year&#39;</span><span class="p">,</span> 
-               <span class="s1">&#39;tourney_month&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_day&#39;</span><span class="p">]]</span>
+<span class="n">table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1"># display first 5 elements</span>
+</pre></div>
 
-<span class="c1">#rename to fit on screen</span>
-<span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;winner_name&#39;</span><span class="p">:</span><span class="s1">&#39;w_name&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_hand&#39;</span><span class="p">:</span><span class="s1">&#39;w_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">:</span><span class="s1">&#39;w_age&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;loser_name&#39;</span><span class="p">:</span><span class="s1">&#39;l_name&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_hand&#39;</span><span class="p">:</span><span class="s1">&#39;l_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">:</span><span class="s1">&#39;l_age&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;tourney_name&#39;</span><span class="p">:</span><span class="s1">&#39;tn_name&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_year&#39;</span><span class="p">:</span><span class="s1">&#39;tn_year&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_month&#39;</span><span class="p">:</span><span class="s1">&#39;tn_month&#39;</span><span class="p">,</span>
-                         <span class="s1">&#39;tourney_day&#39;</span><span class="p">:</span><span class="s1">&#39;tn_day&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
     
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[225]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tourney_id</th>
+      <th>tourney_name</th>
+      <th>surface</th>
+      <th>draw_size</th>
+      <th>tourney_level</th>
+      <th>tourney_date</th>
+      <th>match_num</th>
+      <th>winner_id</th>
+      <th>winner_seed</th>
+      <th>winner_entry</th>
+      <th>...</th>
+      <th>l_SvGms</th>
+      <th>l_bpSaved</th>
+      <th>l_bpFaced</th>
+      <th>winner_rank</th>
+      <th>winner_rank_points</th>
+      <th>loser_rank</th>
+      <th>loser_rank_points</th>
+      <th>tourney_year</th>
+      <th>tourney_month</th>
+      <th>tourney_day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>300</td>
+      <td>104925</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>2.0</td>
+      <td>9055.0</td>
+      <td>1.0</td>
+      <td>9985.0</td>
+      <td>2020.0</td>
+      <td>1.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>299</td>
+      <td>105138</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>9.0</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>2335.0</td>
+      <td>34.0</td>
+      <td>1251.0</td>
+      <td>2020.0</td>
+      <td>1.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>298</td>
+      <td>104925</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>14.0</td>
+      <td>6.0</td>
+      <td>11.0</td>
+      <td>2.0</td>
+      <td>9055.0</td>
+      <td>5.0</td>
+      <td>5705.0</td>
+      <td>2020.0</td>
+      <td>1.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>297</td>
+      <td>105583</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>12.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>34.0</td>
+      <td>1251.0</td>
+      <td>17.0</td>
+      <td>1840.0</td>
+      <td>2020.0</td>
+      <td>1.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2020-8888</td>
+      <td>Atp Cup</td>
+      <td>Hard</td>
+      <td>24</td>
+      <td>A</td>
+      <td>20200106</td>
+      <td>296</td>
+      <td>104745</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>14.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>1.0</td>
+      <td>9985.0</td>
+      <td>18.0</td>
+      <td>1775.0</td>
+      <td>2020.0</td>
+      <td>1.0</td>
+      <td>6.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 52 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Step-3.2:-Cleaning-up-the-ages">Step 3.2: Cleaning up the ages<a class="anchor-link" href="#Step-3.2:-Cleaning-up-the-ages">&#182;</a></h3><p>This step is for later use as you will see. The ages from the current table are floats. We don't really care about that. I just want to know how old they are in years, not their exact age in days. The following code replicates the same process as above by iterating through the table and grabbing each element from the column 'winner_age' and 'loser_age'. Then I just cast them as integers and place them right back in the same spot. I had to manually show you the column of ages due to the data being very untidy. There are too many columns to show on the screen so jupyter adds ... and cuts off some columns and the ages happen to be some of them.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[226]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">[[</span><span class="s1">&#39;winner_age&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">]])</span>
 </pre></div>
 
      </div>
@@ -14036,17 +14461,123 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Index([&#39;tn_name&#39;, &#39;surface&#39;, &#39;w_name&#39;, &#39;w_hand&#39;, &#39;w_age&#39;, &#39;l_name&#39;, &#39;l_hand&#39;,
-       &#39;l_age&#39;, &#39;score&#39;, &#39;minutes&#39;, &#39;tn_year&#39;, &#39;tn_month&#39;, &#39;tn_day&#39;],
-      dtype=&#39;object&#39;)
+<pre>      winner_age  loser_age
+0      32.626968  33.593429
+1      31.728953  29.519507
+2      32.626968  23.901437
+3      29.519507  23.627652
+4      33.593429  20.884326
+...          ...        ...
+1457   30.409309  27.843943
+1458   21.379877  32.755647
+1459   22.976044  23.143053
+1460   23.649555  21.503080
+1461   22.316222  26.696783
+
+[1462 rows x 2 columns]
 </pre>
 </div>
 </div>
 
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[227]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">rank</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">w_age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">])</span> <span class="c1">#grabs the age and casts it as an int</span>
+    <span class="n">l_age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">])</span>
+    
+    <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w_age</span> <span class="c1"># restores the newly casted variable back in the same spot</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_age</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">[[</span><span class="s1">&#39;winner_age&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">]])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[201]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>      winner_age  loser_age
+0           32.0       33.0
+1           31.0       29.0
+2           32.0       23.0
+3           29.0       23.0
+4           33.0       20.0
+...          ...        ...
+1457        30.0       27.0
+1458        21.0       32.0
+1459        22.0       23.0
+1460        23.0       21.0
+1461        22.0       26.0
+
+[1462 rows x 2 columns]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Step-3.3:-Dropping-and-renaming-columns">Step 3.3: Dropping and renaming columns<a class="anchor-link" href="#Step-3.3:-Dropping-and-renaming-columns">&#182;</a></h3><p>This is my final step in tidying up the data. First I start by getting rid of any unwanted columns. This can be done using table.drop() but in this case, there were way fewer columns to keep than drop. So all I did was keep the columns I wanted through the following code.</p>
+<p>Next I renamed certain columns to make the names shorter so they would all fit on the screen. This step is purely optional, I just wanted the data to be very easy to read. I did this through the use of the .rename function from pandas.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[228]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Making a new table called table that only contains the following columns from the original table</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[[</span><span class="s1">&#39;tourney_name&#39;</span><span class="p">,</span> <span class="s1">&#39;surface&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_name&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;loser_name&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_year&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;tourney_month&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_day&#39;</span><span class="p">]]</span>
+
+<span class="c1">#renaming the columns to fit on the screen</span>
+<span class="n">table</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;winner_name&#39;</span><span class="p">:</span><span class="s1">&#39;w_name&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_hand&#39;</span><span class="p">:</span><span class="s1">&#39;w_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;winner_age&#39;</span><span class="p">:</span><span class="s1">&#39;w_age&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;loser_name&#39;</span><span class="p">:</span><span class="s1">&#39;l_name&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_hand&#39;</span><span class="p">:</span><span class="s1">&#39;l_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;loser_age&#39;</span><span class="p">:</span><span class="s1">&#39;l_age&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;tourney_name&#39;</span><span class="p">:</span><span class="s1">&#39;tn_name&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_year&#39;</span><span class="p">:</span><span class="s1">&#39;tn_year&#39;</span><span class="p">,</span> <span class="s1">&#39;tourney_month&#39;</span><span class="p">:</span><span class="s1">&#39;tn_month&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;tourney_day&#39;</span><span class="p">:</span><span class="s1">&#39;tn_day&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>  
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[228]:</div>
 
 
 
@@ -14174,6 +14705,20 @@ a.anchor-link {
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[160]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
